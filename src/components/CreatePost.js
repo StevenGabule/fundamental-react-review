@@ -1,13 +1,16 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
+import { PostContext } from '../App'
 
-export const CreatePost = ({ user, setPosts }) => {
+export const CreatePost = ({ user }) => {
+  const { dispatch } = useContext(PostContext);
   const [content, setContent] = useState('')
   const [image, setImage] = useState(null)
   const imageRef = useRef(null);
 
   function handleSubmit(e) {
     e.preventDefault();
-    setPosts(prev => [{ content, image, user }, ...prev]);
+    const post = { content, image, user, id: Date.now() };
+    dispatch({ type: 'ADD_POST', payload: { post } })
     setContent('')
     imageRef.current.value = '';
   }
